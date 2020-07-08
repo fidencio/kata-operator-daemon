@@ -1,0 +1,63 @@
+os: linux
+dist: bionic
+language: go
+go:
+  - 1.14.x
+services:
+  - docker
+before_script:
+  - sudo chmod 755 /etc/docker
+
+x_base_steps:
+  - &deploy
+    env:
+
+addons:
+  apt:
+    packages:
+      - "libgpgme-dev"
+      - "libdevmapper-dev"
+
+stages:
+  - deploy
+    if: branch = master OR branch =~ release-.*
+  - deploy-multi-arch
+    if: branch = master OR branch =~ release-.*
+
+jobs:
+  include:
+
+  # Build and push the image for amd64
+  - stage: deploy
+    name: Build image for kata-operator-daemon (amd64)
+    arch: amd64
+    deploy:
+      provider: script
+      script: bash hack/deploy.sh
+      skip_cleanup: true
+
+  # Build and push the image for ppc64le
+  - stage: deploy
+    name: Build image for kata-operator-daemon (ppc64le)
+    arch: ppc64le
+    deploy:
+      provider: script
+      script: bash hack/deploy.sh
+      skip_cleanup: true
+
+  # Build and push the image for s390x
+  - stage: deploy
+    name: Build image for kata-operator-daemon (s390x)
+    arch: s390x
+    deploy:
+      provider: script
+      script: bash hack/deploy.sh
+      skip_cleanup: true
+
+  # Deploy the multiarch manifest
+  - stage: deploy-multi-arch
+    name: Deploy multi-arch manifest
+    deploy:
+      provider: script
+      script: bash hack/deploy-multi-arch.sh
+      skip_cleanup: true
