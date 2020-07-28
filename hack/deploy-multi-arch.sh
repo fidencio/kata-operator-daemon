@@ -2,7 +2,7 @@
 
 set -xe
 
-IMAGE_NAME="quay.io/isolatedcontainers/kata-operator-daemon"
+IMAGE_NAME="quay.io/fidencio/test"
 
 if "${TRAVIS_BRANCH}" == "master"; then
 	TAG="latest"
