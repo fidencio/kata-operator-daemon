@@ -19,10 +19,10 @@ addons:
       - "libdevmapper-dev"
 
 stages:
-  - deploy
-    if: branch = master OR branch =~ release-.*
-  - deploy-multi-arch
-    if: branch = master OR branch =~ release-.*
+  - name: deploy
+    if: type != pull_request AND branch =~ /^(master$|release-)/
+  - name: deploy-multi-arch
+    if: type != pull_request AND branch =~ /^(master$|release-)/
 
 jobs:
   include:
