@@ -16,11 +16,11 @@ docker login \
 	quay.io
 
 env DOCKER_CLI_EXPERIMENTAL="enabled" docker manifest create \
-	$IMAGE_NAME:$TAG \
-	$IMAGE_NAME:$TAG-amd64 \
-	$IMAGE_NAME:$TAG-ppc64le \
-	$IMAGE_NAME:$TAG-s390x
+	"$IMAGE_NAME:$TAG" \
+	"$IMAGE_NAME:$TAG-amd64" \
+	"$IMAGE_NAME:$TAG-ppc64le" \
+	"$IMAGE_NAME:$TAG-s390x"
 
 env DOCKER_CLI_EXPERIMENTAL="enabled" docker manifest push \
 	--purge \
-	$IMAGE_NAME:$TAG
+	"$IMAGE_NAME:$TAG"

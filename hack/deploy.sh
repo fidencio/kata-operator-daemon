@@ -4,7 +4,7 @@ set -xe
 
 go build -o image/daemon cmd/daemon/main.go
 
-IMAGE_NAME="quay.io/isolatedcontainers/kata-operator-daemon"
+IMAGE_NAME="quay.io/fidencio/test"
 
 if "${TRAVIS_BRANCH}" == "master"; then
 	TAG="latest-${TRAVIS_CPU_ARCH}"
@@ -19,6 +19,6 @@ docker login \
 
 docker build \
 	--tag "${IMAGE_NAME}:${TAG}" \
-	image/
+	image
 
-docker push ${IMAGE_NAME}:${TAG}
+docker push "${IMAGE_NAME}:${TAG}"

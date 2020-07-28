@@ -8,10 +8,6 @@ services:
 before_script:
   - sudo chmod 755 /etc/docker
 
-x_base_steps:
-  - &deploy
-    env:
-
 addons:
   apt:
     packages:
@@ -20,9 +16,7 @@ addons:
 
 stages:
   - deploy
-    if: branch = master OR branch =~ release-.*
   - deploy-multi-arch
-    if: branch = master OR branch =~ release-.*
 
 jobs:
   include:
@@ -35,6 +29,9 @@ jobs:
       provider: script
       script: bash hack/deploy.sh
       skip_cleanup: true
+      on:
+        all_branches: true
+        condition: $TRAVIS_BRANCH =~ ^(release-.*|master)$
 
   # Build and push the image for ppc64le
   - stage: deploy
@@ -44,6 +41,9 @@ jobs:
       provider: script
       script: bash hack/deploy.sh
       skip_cleanup: true
+      on:
+        all_branches: true
+        condition: $TRAVIS_BRANCH =~ ^(release-.*|master)$
 
   # Build and push the image for s390x
   - stage: deploy
@@ -53,6 +53,9 @@ jobs:
       provider: script
       script: bash hack/deploy.sh
       skip_cleanup: true
+      on:
+        all_branches: true
+        condition: $TRAVIS_BRANCH =~ ^(release-.*|master)$
 
   # Deploy the multiarch manifest
   - stage: deploy-multi-arch
@@ -61,3 +64,6 @@ jobs:
       provider: script
       script: bash hack/deploy-multi-arch.sh
       skip_cleanup: true
+      on:
+        all_branches: true
+        condition: $TRAVIS_BRANCH =~ ^(release-.*|master)$
